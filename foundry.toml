@@ -11,5 +11,7 @@ libs = [
 
 remappings = [
     "forge-std/=lib/forge-std/src/",
+    "@openzeppelin/=lib/openzeppelin-contracts/",
     "wormhole-sdk/=lib/wormhole-solidity-sdk/src/",
+    "core-bridge/=src/",
 ]

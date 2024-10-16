@@ -5,7 +5,6 @@ pragma solidity ^0.8.24;
 import { GasTestBase } from "./GasTestBase.sol";
 
 import { IWormhole                   } from "wormhole-sdk/interfaces/IWormhole.sol";
-import { DEVNET_GUARDIAN_PRIVATE_KEY } from "wormhole-sdk/testing/Constants.sol";
 import {
   PublishedMessage,
   VaaEncoding,
