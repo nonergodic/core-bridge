@@ -10,7 +10,7 @@ contract BackwardsOptimizedGasCost is ManualSigning {
   BackwardsOptimized private _backwardsOptimized;
 
   function setUp() public {
-    _setUpManualSigning();
+    _setUpManualSigning(wormhole.getGuardianSet(wormhole.getCurrentGuardianSetIndex()).keys.length);
     _backwardsOptimized = new BackwardsOptimized(_guardianAddrs);
   }
 

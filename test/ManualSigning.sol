@@ -65,20 +65,18 @@ contract ManualSigning is GasTestBase {
     }
   }}
 
-  function _setUpManualSigning() internal {
-    uint guardianCount = wormhole.getGuardianSet(wormhole.getCurrentGuardianSetIndex()).keys.length;
+  function _setUpManualSigning(uint guardianCount) internal {
     for (uint i = 0; i < guardianCount; ++i) {
       (address ga, uint256 gpk) = _makeAddrAndKey(string.concat("guardian", vm.toString(i + 1)));
       _guardianAddrs.push(ga);
       _guardianPrivateKeys.push(gpk);
     }
 
-    _vaa = _sign(
-      _tbPublishedMsg(),
-      abi.encodePacked(
-        uint8(0), uint8(1), uint8(2), uint8(3), uint8(4), uint8(5), uint8(6),
-        uint8(7), uint8(8), uint8(9), uint8(10), uint8(11), uint8(12)
-      )
-    ).encode();
+    uint quorum = guardianCount * 2 / 3 + 1;
+    bytes memory signingGuardianIndices = new bytes(0);
+    for (uint i = 0; i < quorum; ++i)
+      signingGuardianIndices = abi.encodePacked(signingGuardianIndices, uint8(i));
+
+    _vaa = _sign(_tbPublishedMsg(), signingGuardianIndices).encode();
   }
 }

@@ -14,7 +14,7 @@ contract DrewGasCost is ManualSigning {
   bytes private _encodedGuardianSet;
 
   function setUp() public {
-    _setUpManualSigning();
+    _setUpManualSigning(wormhole.getGuardianSet(wormhole.getCurrentGuardianSetIndex()).keys.length);
 
     _drewCore = Implementation(payable(address(new Wormhole(
       address(new Setup()),
