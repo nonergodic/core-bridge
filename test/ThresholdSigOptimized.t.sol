@@ -9,18 +9,25 @@ import "wormhole-sdk/proxy/Proxy.sol";
 
 contract ThresholdSigOptimizedGasCost is ManualSigning {
   ThresholdSigOptimized private _thresholdSigOptimized;
+  ThresholdSigOptimized private _thresholdSigOptimizedProxied;
 
   function setUp() public {
     _setUpManualSigning(1);
     _thresholdSigOptimized = new ThresholdSigOptimized();
+    bytes memory encodedAddress = abi.encode(_guardianAddrs[0]);
+    _thresholdSigOptimized.checkedUpgrade(encodedAddress);
 
-    _thresholdSigOptimized = ThresholdSigOptimized(payable(address(new Proxy(
-      address(new ThresholdSigOptimized()),
-      abi.encode(_guardianAddrs[0])
+    _thresholdSigOptimizedProxied = ThresholdSigOptimized(payable(address(new Proxy(
+      address(_thresholdSigOptimized),
+      encodedAddress
     ))));
   }
 
   function testThresholdSigOptimizations() public view {
     _thresholdSigOptimized.parseAndVerifyVMThreshold(_vaa);
+  }
+
+  function testThresholdSigOptimizationsProxied() public view {
+    _thresholdSigOptimizedProxied.parseAndVerifyVMThreshold(_vaa);
   }
 }
